@@ -24,9 +24,19 @@ class ChangeStack {
   }
 
   void _moveForward() {
+    _redos.forEach((element) {
+      element.forEach((element) {
+        element.clear();
+      });
+    });
+    
     _redos.clear();
 
     if (limit != null && _history.length > limit + 1) {
+      _history.first.forEach((element) {
+        element.clear();
+      });
+
       _history.removeFirst();
     }
   }
@@ -50,6 +60,19 @@ class ChangeStack {
 
   /// Clear Undo History
   void clearHistory() {
+
+    _redos.forEach((element) {
+      element.forEach((element) {
+        element.clear();
+      });
+    });
+
+    _history.forEach((element) {
+      element.forEach((element) {
+        element.clear();
+      });
+    });
+
     _history.clear();
     _redos.clear();
   }
@@ -81,6 +104,7 @@ class Change<T> {
     this._execute(),
     this._undo(T oldValue), {
     this.description,
+    this.onClear,
   });
 
   final String description;
@@ -90,11 +114,17 @@ class Change<T> {
 
   final void Function(T oldValue) _undo;
 
+  final void Function(T oldValue) onClear;
+
   void execute() {
     _execute();
   }
 
   void undo() {
     _undo(_oldValue);
+  }
+
+  void clear() {
+    onClear?.call(_oldValue);
   }
 }
