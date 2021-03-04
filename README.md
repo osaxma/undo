@@ -1,3 +1,8 @@
+# differences from original undo:
+- Added `onClear` callback that's called whenever a change is removed from either `history` stack or `redos` stack.
+  This callback can be used to free resources in case the change is holding a value that needs to be disposed. 
+- Migrated to null-safety. 
+
 # undo
 
 An undo redo library for Dart/Flutter. Forked from [here](https://github.com/Mixbook/undo.dart) and updated for Flutter. Demo can be viewed [here](https://rodydavis.github.io/undo/).
